@@ -1,1 +1,0 @@
-from games.lost_ark import News
