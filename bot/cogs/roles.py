@@ -6,35 +6,35 @@ class Roles(commands.Cog):
     def __init__(self, bot:commands.Bot):
         self.bot = bot
 
-        # List of roles for test server
+        # List of roles
         # format : (name="emoji_name", id=emoji_id): role_id
         self.emoji_to_role = {
-            discord.PartialEmoji(name="pistolancier", id=957640668396785684): 957691733032964137,
-            # discord.PartialEmoji(name="destructeur", id=0): 0,
-            discord.PartialEmoji(name="berserker", id=957640668073824277): 957691749730488331,
-            discord.PartialEmoji(name="paladin", id=957640668405182464): 957691763676565635,
-            discord.PartialEmoji(name="elementiste", id=957640668497444864): 957691764326695016,
-            discord.PartialEmoji(name="essentialiste", id=957640668455526400): 957691765278785576,
-            discord.PartialEmoji(name="spirite", id=957640668514250792): 957691765740146718,
-            discord.PartialEmoji(name="pugiliste", id=957640668510060574): 957691766776152064,
-            discord.PartialEmoji(name="lanciere", id=961633155838771220): 961655213247303772,
-            discord.PartialEmoji(name="franctireur", id=957640670242287616): 957691767669551215,
-            discord.PartialEmoji(name="fusiliere", id=957640668677820456): 957691767694721115,
-            discord.PartialEmoji(name="sagittaire", id=957640668572971028): 957691804424212502,
-            discord.PartialEmoji(name="artilleur", id=957697508329529404): 957691931079606342,
-            # discord.PartialEmoji(name="machiniste", id=0): 0,
-            # discord.PartialEmoji(name="arcaniste", id=0): 0,
-            discord.PartialEmoji(name="barde", id=957640668132544584): 957691933025771613,
-            # discord.PartialEmoji(name="invocatrice", id=0): 0,
-            discord.PartialEmoji(name="sorciere", id=957640668535197737): 957691935227781161,
-            # discord.PartialEmoji(name="faucheuse", id=0): 0,
-            discord.PartialEmoji(name="sanguelame", id=957640668635856946): 957691937203290123,
-            discord.PartialEmoji(name="demoniste", id=957640668363247617): 957691938591621251,
-            # discord.PartialEmoji(name="artiste", id=0): 0,
-            discord.PartialEmoji(name="pvp", id=957640668463894568): 957691411283730433,
-            discord.PartialEmoji(name="pve", id=957640668438749204): 957691715408527450,
-            discord.PartialEmoji(name="mokokosanonymes", id=957746859563171940): 957747537576603648,
-            discord.PartialEmoji(name="🔔"): 707758009228460123
+            discord.PartialEmoji(name="".join(self.bot.PISTOLANCIER_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.PISTOLANCIER_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.PISTOLANCIER_ROLE_ID),
+            # discord.PartialEmoji(name="".join(self.bot.DESTRUCTEUR_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.DESTRUCTEUR_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.DESTRUCTEUR_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.BERSERKER_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.BERSERKER_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.BERSERKER_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.PALADIN_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.PALADIN_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.PALADIN_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.ELEMENTISTE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.ELEMENTISTE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.ELEMENTISTE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.ESSENTIALISTE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.ESSENTIALISTE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.ESSENTIALISTE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.SPIRITE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.SPIRITE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.SPIRITE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.PUGILISTE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.PUGILISTE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.PUGILISTE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.LANCIERE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.LANCIERE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.LANCIERE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.FRANCTIREUR_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.FRANCTIREUR_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.FRANCTIREUR_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.FUSILIERE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.FUSILIERE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.FUSILIERE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.SAGITTAIRE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.SAGITTAIRE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.SAGITTAIRE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.ARTILLEUR_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.ARTILLEUR_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.ARTILLEUR_ROLE_ID),
+            # discord.PartialEmoji(name="".join(self.bot.MACHINISTE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.MACHINISTE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.MACHINISTE_ROLE_ID),
+            # discord.PartialEmoji(name="".join(self.bot.ARCANISTE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.ARCANISTE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.ARCANISTE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.BARDE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.BARDE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.BARDE_ROLE_ID),
+            # discord.PartialEmoji(name="".join(self.bot.INVOCATRICE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.INVOCATRICE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.INVOCATRICE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.SORCIERE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.SORCIERE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.SORCIERE_ROLE_ID),
+            # discord.PartialEmoji(name="".join(self.bot.FAUCHEUSE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.FAUCHEUSE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.FAUCHEUSE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.SANGUELAME_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.SANGUELAME_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.SANGUELAME_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.DEMONISTE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.DEMONISTE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.DEMONISTE_ROLE_ID),
+            # discord.PartialEmoji(name="".join(self.bot.ARTISTE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.ARTISTE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.ARTISTE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.PVP_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.PVP_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.PVP_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.PVE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.PVE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.PVE_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.MOKOKOS_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.MOKOKOS_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.MOKOKOS_ROLE_ID),
+            discord.PartialEmoji(name="🔔"): int(self.bot.RAPPEL_ROLE_ID)
         }
 
     @commands.Cog.listener()
@@ -61,8 +61,9 @@ class Roles(commands.Cog):
         try:
             invite_role = self.bot.guild.get_role(int(self.bot.INVITE_ROLE_ID))
             channel = await self.bot.fetch_channel(payload.channel_id)
-            # if (payload.emoji.name == "mokokosanonymes" or payload.emoji.id == "957746859563171940") and invite_role in payload.member.roles:
-            if (payload.emoji.name == "mokokosanonymes" or payload.emoji.id == "957628781974143026") and invite_role in payload.member.roles:
+            print(payload.emoji.name)
+            print(payload.emoji.id)
+            if (payload.emoji.name == "".join(self.bot.MOKOKOS_EMOJI_ID.split(":", 2)[:2]) or payload.emoji.id == int("".join(self.bot.MOKOKOS_EMOJI_ID.split(":", -1)[-1:]))) and invite_role in payload.member.roles:
                 await payload.member.remove_roles(invite_role)
             await payload.member.add_roles(role)
             msg = await channel.send(f"{payload.member.mention}, vous avez obtenu le rôle `{role.name}`!")
@@ -96,8 +97,7 @@ class Roles(commands.Cog):
             invite_role = self.bot.guild.get_role(int(self.bot.INVITE_ROLE_ID))
             channel = await self.bot.fetch_channel(payload.channel_id)
             member = await(await self.bot.fetch_guild(payload.guild_id)).fetch_member(payload.user_id)
-            # if (payload.emoji.name == "mokokosanonymes" or payload.emoji.id == "957746859563171940") and invite_role not in member.roles:
-            if (payload.emoji.name == "mokokosanonymes" or payload.emoji.id == "957628781974143026") and invite_role not in member.roles:
+            if (payload.emoji.name == "".join(self.bot.MOKOKOS_EMOJI_ID.split(":", 2)[:2]) or payload.emoji.id == int("".join(self.bot.MOKOKOS_EMOJI_ID.split(":", -1)[-1:]))) and invite_role not in member.roles:
                 await member.add_roles(invite_role)
             await member.remove_roles(role)
             msg = await channel.send(f"{member.mention}, vous n'avez plus le rôle `{role.name}`!")
