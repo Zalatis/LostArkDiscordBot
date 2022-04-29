@@ -1,6 +1,7 @@
 # LostArkDiscordBot
 
 Feel free to fork it and update it as you want 🙂
+
 If you also want to contribute you are more than welcome 👌
 
 # Setup
