@@ -39,7 +39,7 @@ class Roles(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
-        if str(payload.channel_id) != str(self.bot.ROLES_CHANNEL_ID):
+        if payload.channel_id != self.bot.ROLES_CHANNEL_ID:
             return
 
         if payload.member.bot == True:
@@ -71,7 +71,7 @@ class Roles(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
-        if str(payload.channel_id) != str(self.bot.ROLES_CHANNEL_ID):
+        if payload.channel_id != self.bot.ROLES_CHANNEL_ID:
             return
 
         guild = self.bot.get_guild(payload.guild_id)

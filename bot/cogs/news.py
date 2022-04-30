@@ -80,7 +80,7 @@ class LostArkNews(commands.Cog):
     async def update_news(self):
         await self.bot.wait_until_ready()
         self.get_news_info()
-        self.news_channel = await self.bot.fetch_channel(int(self.bot.NEWS_CHANNEL_ID))
+        self.news_channel = await self.bot.fetch_channel(self.bot.NEWS_CHANNEL_ID)
         self.title = self.news["title"].strip()
         self.url = self.news["url"].strip()
         self.desc = self.news["desc"].strip()

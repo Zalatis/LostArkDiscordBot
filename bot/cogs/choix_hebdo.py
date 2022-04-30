@@ -9,7 +9,7 @@ class Choices(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self,message:discord.Message):
-        if message.channel.id != int(self.bot.HEBDO_CHOICE_CHANNEL_ID):
+        if message.channel.id != self.bot.HEBDO_CHOICE_CHANNEL_ID:
             return
 
         emojis = re.findall(r'<:\w*:\d*>',message.content)
