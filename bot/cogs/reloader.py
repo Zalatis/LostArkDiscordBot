@@ -7,7 +7,7 @@ class Reloader(commands.Cog):
         self.bot = bot
 
     async def cog_check(self, ctx: discord.ApplicationContext):
-        if str(ctx.author.id) not in ctx.bot.DEVS:
+        if str(ctx.author.id) not in ctx.bot.DEV_ID:
             msg = await ctx.send(f"{ctx.command.name} est une commande de développement uniquement")
             await msg.delete(delay=5)
             return False
