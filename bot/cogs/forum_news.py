@@ -1,4 +1,3 @@
-from turtle import pos
 import discord
 from discord.ext import commands,tasks
 import urllib
