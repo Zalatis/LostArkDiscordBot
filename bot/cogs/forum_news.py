@@ -67,36 +67,79 @@ class LostArkForumNews(commands.Cog):
         return self
 
     # Updates Lost Ark news every 5 minutes.
-    @tasks.loop(minutes=1)
+    @tasks.loop(minutes=5)
     async def update_news(self):
         await self.bot.wait_until_ready()
         self.get_news_info()
-        self.news_channel = await self.bot.fetch_channel(self.bot.NEWS_CHANNEL_ID)
+        self.news_channel = await self.bot.fetch_channel(int(self.bot.NEWS_CHANNEL_ID))
         self.title = self.news["title"].strip()
         self.url = self.news["url"].strip()
         self.desc = self.news["desc"].strip()
         try:
-            with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'r+', encoding='utf8') as f:
+            with open ('./bot/cogs/txt_files/latest-news.txt', 'r', encoding='utf8') as f:
                 lines = f.readlines()
                 f.seek(0)
                 for line in lines:
                     if line.startswith("Latest Title : "):
                         self.last_news_title = line.split("Latest Title : ")[1].strip()
                     elif line.startswith("Latest Description : "):
-                        self.last_news_description = line.split("Latest Description : ")[1].strip()
-                    elif line.startswith("Message ID : "):
-                        self.last_news_message_id = line.split("Message ID : ")[1].strip()
-                    else:
-                        f.truncate()
-                        self.last_news_title = None
                         self.last_news_description = None
+                    elif line.startswith("Message ID : "):
                         self.last_news_message_id = None
+                    else:
+                        self.last_news_title = None
                 f.close()
         except:
             raise Exception("Impossible d'ouvrir latest-forum-news.txt")
-        if self.last_news_title != None:
-            if self.last_news_title != self.title:
-                # print("Le titre a changé")
+        if self.last_news_title != self.title:
+            try:
+                with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'r+', encoding='utf8') as f:
+                    lines = f.readlines()
+                    f.seek(0)
+                    for line in lines:
+                        if line.startswith("Latest Title : "):
+                            self.last_news_title = line.split("Latest Title : ")[1].strip()
+                        elif line.startswith("Latest Description : "):
+                            self.last_news_description = line.split("Latest Description : ")[1].strip()
+                        elif line.startswith("Message ID : "):
+                            self.last_news_message_id = line.split("Message ID : ")[1].strip()
+                        else:
+                            f.truncate()
+                            self.last_news_title = None
+                            self.last_news_description = None
+                            self.last_news_message_id = None
+                    f.close()
+            except:
+                raise Exception("Impossible d'ouvrir latest-forum-news.txt")
+            if self.last_news_title != None:
+                if self.last_news_title != self.title:
+                    # print("Le titre a changé")
+                    embed = discord.Embed(title=self.title, url=self.url, description=self.desc, color=self.color)
+                    msg = await self.news_channel.send(embed=embed)
+                    self.last_news_message_id = msg.id
+                    try:
+                        with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
+                            f.seek(0)
+                            f.truncate()
+                            f.write("Latest Title : " + self.title + "\nLatest Description : " + self.desc + "\nMessage ID : " + str(self.last_news_message_id))
+                            f.close()
+                    except:
+                        raise Exception("Impossible d'ouvrir latest-forum-news.txt")
+                elif self.last_news_title == self.title and self.last_news_description != self.desc:
+                    # print("La description a changé")
+                    try:
+                        with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
+                            f.seek(0)
+                            f.truncate()
+                            f.write("Latest Title : " + self.title + "\nLatest Description : " + self.desc + "\nMessage ID : " + str(self.last_news_message_id))
+                            f.close()
+                    except:
+                        raise Exception("Impossible d'ouvrir latest-forum-news.txt")
+                    self.msg = await self.news_channel.fetch_message(int(self.last_news_message_id))
+                    embed = discord.Embed(title=self.title, url=self.url, description=self.desc, color=self.color)
+                    await self.msg.edit(embed = embed)
+            else:
+                # print("Premier message")
                 embed = discord.Embed(title=self.title, url=self.url, description=self.desc, color=self.color)
                 msg = await self.news_channel.send(embed=embed)
                 self.last_news_message_id = msg.id
@@ -108,32 +151,6 @@ class LostArkForumNews(commands.Cog):
                         f.close()
                 except:
                     raise Exception("Impossible d'ouvrir latest-forum-news.txt")
-            elif self.last_news_title == self.title and self.last_news_description != self.desc:
-                # print("La description a changé")
-                try:
-                    with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
-                        f.seek(0)
-                        f.truncate()
-                        f.write("Latest Title : " + self.title + "\nLatest Description : " + self.desc + "\nMessage ID : " + str(self.last_news_message_id))
-                        f.close()
-                except:
-                    raise Exception("Impossible d'ouvrir latest-forum-news.txt")
-                self.msg = await self.news_channel.fetch_message(int(self.last_news_message_id))
-                embed = discord.Embed(title=self.title, url=self.url, description=self.desc, color=self.color)
-                await self.msg.edit(embed = embed)
-        else:
-            # print("Premier message")
-            embed = discord.Embed(title=self.title, url=self.url, description=self.desc, color=self.color)
-            msg = await self.news_channel.send(embed=embed)
-            self.last_news_message_id = msg.id
-            try:
-                with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
-                    f.seek(0)
-                    f.truncate()
-                    f.write("Latest Title : " + self.title + "\nLatest Description : " + self.desc + "\nMessage ID : " + str(self.last_news_message_id))
-                    f.close()
-            except:
-                raise Exception("Impossible d'ouvrir latest-forum-news.txt")
 
 def setup(bot:commands.Bot):
     bot.add_cog(LostArkForumNews(bot))
