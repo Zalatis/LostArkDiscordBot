@@ -1,4 +1,4 @@
-git+https://github.com/Pycord-Development/pycord
+git+https://github.com/Pycord-Development/pycord.git@22d9c92def63d5f65be6dbc64758a5673b830fe3
 pytz
 PyNacl
 wavelink
