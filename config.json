@@ -18,6 +18,7 @@
     
     "SPOTIFY_ID": "xxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "SPOTIFY_SECRET": "xxxxxxxxxxxxxxxxxxxxxxxx",
+    "MONGO_URI": "Goto your mongoDB cluster-> click on connect -> choose Connect your application -> Choose python and 3.6 and above and copy the URI",
     
     "PISTOLANCIER_ROLE_ID": "000000000000000000",
     "DESTRUCTEUR_ROLE_ID": "000000000000000000",
