@@ -6,6 +6,7 @@ from discord import ui
 import os,json
 from pathlib import Path
 from pytz import timezone
+from .database.db_setup import Database
 
 # Bot subclass
 class BotSubclass(commands.Bot):
@@ -25,6 +26,8 @@ class BotSubclass(commands.Bot):
                     self.TIMEZONE = timezone(self._DATA[x])
                 elif "CHANNEL_ID" in x:
                     setattr(self, x, int(self._DATA[x]))
+                elif "MONGO_URI" in x:
+                    self.db = Database(self._DATA['MONGO_URI'])
                 else:
                     setattr(self, x, self._DATA[x])
 
