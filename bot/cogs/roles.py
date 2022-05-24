@@ -10,7 +10,7 @@ class Roles(commands.Cog):
         # format : (name="emoji_name", id=emoji_id): role_id
         self.emoji_to_role = {
             discord.PartialEmoji(name="".join(self.bot.PISTOLANCIER_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.PISTOLANCIER_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.PISTOLANCIER_ROLE_ID),
-            # discord.PartialEmoji(name="".join(self.bot.DESTRUCTEUR_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.DESTRUCTEUR_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.DESTRUCTEUR_ROLE_ID),
+            discord.PartialEmoji(name="".join(self.bot.DESTRUCTEUR_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.DESTRUCTEUR_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.DESTRUCTEUR_ROLE_ID),
             discord.PartialEmoji(name="".join(self.bot.BERSERKER_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.BERSERKER_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.BERSERKER_ROLE_ID),
             discord.PartialEmoji(name="".join(self.bot.PALADIN_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.PALADIN_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.PALADIN_ROLE_ID),
             discord.PartialEmoji(name="".join(self.bot.ELEMENTISTE_EMOJI_ID.split(":", 2)[:2]), id=int("".join(self.bot.ELEMENTISTE_EMOJI_ID.split(":", -1)[-1:]))): int(self.bot.ELEMENTISTE_ROLE_ID),
@@ -39,7 +39,7 @@ class Roles(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
-        if payload.channel_id != self.bot.ROLES_CHANNEL_ID:
+        if str(payload.channel_id) != str(self.bot.ROLES_CHANNEL_ID):
             return
 
         if payload.member.bot == True:
@@ -71,7 +71,7 @@ class Roles(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
-        if payload.channel_id != self.bot.ROLES_CHANNEL_ID:
+        if str(payload.channel_id) != str(self.bot.ROLES_CHANNEL_ID):
             return
 
         guild = self.bot.get_guild(payload.guild_id)
