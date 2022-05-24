@@ -198,35 +198,35 @@ class Admin(commands.Cog):
         # msg = await ctx.respond(f"`{tot}` p. `{de.name}` > `{vers.name}`")
         interaction = await ctx.respond(f"`{tot}` p. `{de.name}` > `{vers.name}`", ephemeral=True)
 
-    @slash_command(
-        name = "update_roles" , 
-        usage="/update_roles" , 
-        description = "Met à jour le système de rôles par réaction (Admin seulement)" ,
-        guild_ids=GUILD_IDS
-    )
-    @permissions.has_any_role(*PERMITED_ROLES_IDS)
-    async def update_roles(self,ctx):
-        if not await self.cog_check(ctx):
-            return 
+    # @slash_command(
+    #     name = "update_roles" , 
+    #     usage="/update_roles" , 
+    #     description = "Met à jour le système de rôles par réaction (Admin seulement)" ,
+    #     guild_ids=GUILD_IDS
+    # )
+    # @permissions.has_any_role(*PERMITED_ROLES_IDS)
+    # async def update_roles(self,ctx):
+    #     if not await self.cog_check(ctx):
+    #         return 
         
-        interaction = await ctx.respond("Mise à jour en cours...")
+    #     interaction = await ctx.respond("Mise à jour en cours...")
 
-        # Roles Guerries
-        channel = await self.bot.guild.fetch_channel(int(self.bot.ROLES_CHANNEL_ID))
-        msg = await channel.fetch_message("959174550640295956")
-        embed = discord.Embed(title="Guerriers", description="Vous trouverez ci-dessous les rôles liés à la classe **Guerrier**" , color= discord.Color.from_rgb(208,179,115))
-        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/277197386772774912/958088471703072808/ArchetypeWarrior.png")
-        embed.add_field(name="Pistolancier:", value= "<"+ self.bot.PISTOLANCIER_EMOJI_ID + ">", inline=True)
-        embed.add_field(name="Destructeur:", value= "<"+ self.bot.DESTRUCTEUR_EMOJI_ID + ">", inline=True)
-        embed.add_field(name="Berserker:", value= "<"+ self.bot.BERSERKER_EMOJI_ID + ">", inline=True)
-        embed.add_field(name="Paladin:", value= "<"+ self.bot.PALADIN_EMOJI_ID + ">", inline=True)
-        await msg.add_reaction(self.bot.PISTOLANCIER_EMOJI_ID)
-        await msg.add_reaction(self.bot.DESTRUCTEUR_EMOJI_ID)
-        await msg.add_reaction(self.bot.BERSERKER_EMOJI_ID)
-        await msg.add_reaction(self.bot.PALADIN_EMOJI_ID)
-        await msg.edit(embed = embed)
+    #     # Roles Guerries
+    #     channel = await self.bot.guild.fetch_channel(int(self.bot.ROLES_CHANNEL_ID))
+    #     msg = await channel.fetch_message("959174550640295956")
+    #     embed = discord.Embed(title="Guerriers", description="Vous trouverez ci-dessous les rôles liés à la classe **Guerrier**" , color= discord.Color.from_rgb(208,179,115))
+    #     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/277197386772774912/958088471703072808/ArchetypeWarrior.png")
+    #     embed.add_field(name="Pistolancier:", value= "<"+ self.bot.PISTOLANCIER_EMOJI_ID + ">", inline=True)
+    #     embed.add_field(name="Destructeur:", value= "<"+ self.bot.DESTRUCTEUR_EMOJI_ID + ">", inline=True)
+    #     embed.add_field(name="Berserker:", value= "<"+ self.bot.BERSERKER_EMOJI_ID + ">", inline=True)
+    #     embed.add_field(name="Paladin:", value= "<"+ self.bot.PALADIN_EMOJI_ID + ">", inline=True)
+    #     await msg.add_reaction(self.bot.PISTOLANCIER_EMOJI_ID)
+    #     await msg.add_reaction(self.bot.DESTRUCTEUR_EMOJI_ID)
+    #     await msg.add_reaction(self.bot.BERSERKER_EMOJI_ID)
+    #     await msg.add_reaction(self.bot.PALADIN_EMOJI_ID)
+    #     await msg.edit(embed = embed)
         
-        await interaction.delete_original_message()
+    #     await interaction.delete_original_message()
     
     # @slash_command(
     #     name = "update_welcome" , 
