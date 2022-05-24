@@ -52,12 +52,12 @@ class Admin(commands.Cog):
         embed = discord.Embed(title="Guerriers", description="Vous trouverez ci-dessous les rôles liés à la classe **Guerrier**" , color= discord.Color.from_rgb(208,179,115))
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/277197386772774912/958088471703072808/ArchetypeWarrior.png")
         embed.add_field(name="Pistolancier:", value= "<"+ self.bot.PISTOLANCIER_EMOJI_ID + ">", inline=True)
-        # embed.add_field(name="Destructeur:", value= "<"+ self.bot.DESTRUCTEUR_EMOJI_ID + ">", inline=True)
+        embed.add_field(name="Destructeur:", value= "<"+ self.bot.DESTRUCTEUR_EMOJI_ID + ">", inline=True)
         embed.add_field(name="Berserker:", value= "<"+ self.bot.BERSERKER_EMOJI_ID + ">", inline=True)
         embed.add_field(name="Paladin:", value= "<"+ self.bot.PALADIN_EMOJI_ID + ">", inline=True)
         msg = await ctx.channel.send(embed = embed)
         await msg.add_reaction(self.bot.PISTOLANCIER_EMOJI_ID)
-        # await msg.add_reaction(self.bot.DESTRUCTEUR_EMOJI_ID)
+        await msg.add_reaction(self.bot.DESTRUCTEUR_EMOJI_ID)
         await msg.add_reaction(self.bot.BERSERKER_EMOJI_ID)
         await msg.add_reaction(self.bot.PALADIN_EMOJI_ID)
 
@@ -161,9 +161,9 @@ class Admin(commands.Cog):
         embed.set_author(name="MaajiN", icon_url="https://cdn.discordapp.com/avatars/174605384680472576/64b6e8f2165f5966630f851615133f41.webp?size=32")
         embed.set_thumbnail(url="https://media.discordapp.net/attachments/277197386772774912/957622310305689621/logo_discord.png")
         embed.add_field(name="__Présentation :__", value="La guilde évolue principalement sur le serveur Trixion avec des membres présents sur d'autres serveurs tels que Neria, ici pas de prérequis pour intégrer la guilde, seule une bonne humeur et de l'entente entre membres est de mise.", inline=False)
-        embed.add_field(name="__Informations : __", value="Lors de chaque reset hebdomadaire le jeudi, les membres de la guilde peuvent voter pour les quêtes de guildes dans : <#" + str(self.bot.HEBDO_CHOICE_CHANNEL_ID) + ">, les news concernant le jeu et ses mises à jour sont automatiquement postées dans le channel <#" + str(self.bot.NEWS_CHANNEL_ID) + "> via <@" + self.bot.BOT_ID + "> développé par <@" + self.bot.DEV_ID + ">.", inline=False)
-        embed.add_field(name="__Rôles et alertes :__", value="Dans <#" + str(self.bot.ROLES_CHANNEL_ID) + ">, vous pouvez réagir avec les émojis liées aux classes que vous jouez, et si vous faites partie de la guilde `Les Mokokos Anonymes`. Vous pouvez également utliser l'émoji 🔔 pour activer les alertes vous rappelant chaque jour de contribuer à la guilde via votre don quotidien et le soutien de la ou les recherches en cours !", inline=False)
-        embed.add_field(name="__Ressources :__", value="Pour les débutants ou les joueurs cherchant de l'aide, le salon <#" + str(self.bot.RESSOURCES_CHANNEL_ID) + "> est à disposition, vous y trouverez notamment les différentes cartes interactives, les builds, les guides et autres ressources importantes pour vous épauler.", inline=False)
+        embed.add_field(name="__Informations : __", value="Lors de chaque reset hebdomadaire le jeudi, les membres de la guilde peuvent voter pour les quêtes de guildes dans : <#" + self.bot.HEBDO_CHOICE_CHANNEL_ID + ">, les news concernant le jeu et ses mises à jour sont automatiquement postées dans le channel <#" + self.bot.NEWS_CHANNEL_ID + "> via <@" + self.bot.BOT_ID + "> développé par <@" + self.bot.DEV_ID + ">.", inline=False)
+        embed.add_field(name="__Rôles et alertes :__", value="Dans <#" + self.bot.ROLES_CHANNEL_ID + ">, vous pouvez réagir avec les émojis liées aux classes que vous jouez, et si vous faites partie de la guilde `Les Mokokos Anonymes`. Vous pouvez également utliser l'émoji 🔔 pour activer les alertes vous rappelant chaque jour de contribuer à la guilde via votre don quotidien et le soutien de la ou les recherches en cours !", inline=False)
+        embed.add_field(name="__Ressources :__", value="Pour les débutants ou les joueurs cherchant de l'aide, le salon <#" + self.bot.RESSOURCES_CHANNEL_ID + "> est à disposition, vous y trouverez notamment les différentes cartes interactives, les builds, les guides et autres ressources importantes pour vous épauler.", inline=False)
         await ctx.send(embed = embed)
         
         await interaction.delete_original_message()
@@ -198,38 +198,35 @@ class Admin(commands.Cog):
         # msg = await ctx.respond(f"`{tot}` p. `{de.name}` > `{vers.name}`")
         interaction = await ctx.respond(f"`{tot}` p. `{de.name}` > `{vers.name}`", ephemeral=True)
 
-    # @slash_command(
-    #     name = "update_roles" , 
-    #     usage="/update_roles" , 
-    #     description = "Met à jour le système de rôles par réaction (Admin seulement)" ,
-    #     guild_ids=GUILD_IDS
-    # )
-    # @permissions.has_any_role(*PERMITED_ROLES_IDS)
-    # async def update_roles(self,ctx):
-    #     if not await self.cog_check(ctx):
-    #         return 
+    @slash_command(
+        name = "update_roles" , 
+        usage="/update_roles" , 
+        description = "Met à jour le système de rôles par réaction (Admin seulement)" ,
+        guild_ids=GUILD_IDS
+    )
+    @permissions.has_any_role(*PERMITED_ROLES_IDS)
+    async def update_roles(self,ctx):
+        if not await self.cog_check(ctx):
+            return 
         
-    #     interaction = await ctx.respond("Mise à jour en cours...")
+        interaction = await ctx.respond("Mise à jour en cours...")
 
-    #     # Roles Martialiste
-    #     channel = await self.bot.guild.fetch_channel(self.bot.ROLES_CHANNEL_ID)
-    #     msg = await channel.fetch_message("959174556046725282")
-    #     embed = discord.Embed(title="Martialistes", description="Vous trouverez ci-dessous les rôles liés à la classe **Martialiste**" , color= discord.Color.from_rgb(117,169,213))
-    #     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/277197386772774912/958088470860021830/ArchetypeFighter.png")
-    #     embed.add_field(name="Elementiste:", value= "<"+ self.bot.ELEMENTISTE_EMOJI_ID + ">", inline=True)
-    #     embed.add_field(name="Essentialiste:", value= "<"+ self.bot.ESSENTIALISTE_EMOJI_ID + ">", inline=True)
-    #     embed.add_field(name="Spirite:", value= "<"+ self.bot.SPIRITE_EMOJI_ID + ">", inline=True)
-    #     embed.add_field(name="Pugiliste:", value= "<"+ self.bot.PUGILISTE_EMOJI_ID + ">", inline=True)
-    #     embed.add_field(name="Lancière:", value= "<"+ self.bot.LANCIERE_EMOJI_ID + ">", inline=True)
-    #     embed.add_field(name="​", value= "​​", inline=True)
-    #     await msg.add_reaction(self.bot.ELEMENTISTE_EMOJI_ID)
-    #     await msg.add_reaction(self.bot.ESSENTIALISTE_EMOJI_ID)
-    #     await msg.add_reaction(self.bot.SPIRITE_EMOJI_ID)
-    #     await msg.add_reaction(self.bot.PUGILISTE_EMOJI_ID)
-    #     await msg.add_reaction(self.bot.LANCIERE_EMOJI_ID)
-    #     await msg.edit(embed = embed)
+        # Roles Guerries
+        channel = await self.bot.guild.fetch_channel(int(self.bot.ROLES_CHANNEL_ID))
+        msg = await channel.fetch_message("959174550640295956")
+        embed = discord.Embed(title="Guerriers", description="Vous trouverez ci-dessous les rôles liés à la classe **Guerrier**" , color= discord.Color.from_rgb(208,179,115))
+        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/277197386772774912/958088471703072808/ArchetypeWarrior.png")
+        embed.add_field(name="Pistolancier:", value= "<"+ self.bot.PISTOLANCIER_EMOJI_ID + ">", inline=True)
+        embed.add_field(name="Destructeur:", value= "<"+ self.bot.DESTRUCTEUR_EMOJI_ID + ">", inline=True)
+        embed.add_field(name="Berserker:", value= "<"+ self.bot.BERSERKER_EMOJI_ID + ">", inline=True)
+        embed.add_field(name="Paladin:", value= "<"+ self.bot.PALADIN_EMOJI_ID + ">", inline=True)
+        await msg.add_reaction(self.bot.PISTOLANCIER_EMOJI_ID)
+        await msg.add_reaction(self.bot.DESTRUCTEUR_EMOJI_ID)
+        await msg.add_reaction(self.bot.BERSERKER_EMOJI_ID)
+        await msg.add_reaction(self.bot.PALADIN_EMOJI_ID)
+        await msg.edit(embed = embed)
         
-    #     await interaction.delete_original_message()
+        await interaction.delete_original_message()
     
     # @slash_command(
     #     name = "update_welcome" , 
@@ -250,9 +247,9 @@ class Admin(commands.Cog):
     #     embed.set_author(name="MaajiN", icon_url="https://cdn.discordapp.com/avatars/174605384680472576/64b6e8f2165f5966630f851615133f41.webp?size=32")
     #     embed.set_thumbnail(url="https://media.discordapp.net/attachments/277197386772774912/957622310305689621/logo_discord.png")
     #     embed.add_field(name="__Présentation :__", value="La guilde évolue principalement sur le serveur Trixion avec des membres présents sur d'autres serveurs tels que Neria, ici pas de prérequis pour intégrer la guilde, seule une bonne humeur et de l'entente entre membres est de mise.", inline=False)
-    #     embed.add_field(name="__Informations : __", value="Lors de chaque reset hebdomadaire le jeudi, les membres de la guilde peuvent voter pour les quêtes de guildes dans : <#" + str(self.bot.HEBDO_CHOICE_CHANNEL_ID) + ">, les news concernant le jeu et ses mises à jour sont automatiquement postées dans le channel <#" + str(self.bot.NEWS_CHANNEL_ID) + "> via <@" + self.bot.BOT_ID + "> développé par <@" + self.bot.DEV_ID + ">.", inline=False)
-    #     embed.add_field(name="__Rôles et alertes :__", value="Dans <#" + str(self.bot.ROLES_CHANNEL_ID) + ">, vous pouvez réagir avec les émojis liées aux classes que vous jouez, et si vous faites partie de la guilde `Les Mokokos Anonymes`. Vous pouvez également utliser l'émoji 🔔 pour activer les alertes vous rappelant chaque jour de contribuer à la guilde via votre don quotidien et le soutien de la ou les recherches en cours !", inline=False)
-    #     embed.add_field(name="__Ressources :__", value="Pour les débutants ou les joueurs cherchant de l'aide, le salon <#" + str(self.bot.RESSOURCES_CHANNEL_ID) + "> est à disposition, vous y trouverez notamment les différentes cartes interactives, les builds, les guides et autres ressources importantes pour vous épauler.", inline=False)
+    #     embed.add_field(name="__Informations : __", value="Lors de chaque reset hebdomadaire le jeudi, les membres de la guilde peuvent voter pour les quêtes de guildes dans : <#" + self.bot.HEBDO_CHOICE_CHANNEL_ID + ">, les news concernant le jeu et ses mises à jour sont automatiquement postées dans le channel <#" + self.bot.NEWS_CHANNEL_ID + "> via <@" + self.bot.BOT_ID + "> développé par <@" + self.bot.DEVS + ">.", inline=False)
+    #     embed.add_field(name="__Rôles et alertes :__", value="Dans <#" + self.bot.ROLES_CHANNEL_ID + ">, vous pouvez réagir avec les émojis liées aux classes que vous jouez, et si vous faites partie de la guilde `Les Mokokos Anonymes`. Vous pouvez également utliser l'émoji 🔔 pour activer les alertes vous rappelant chaque jour de contribuer à la guilde via votre don quotidien et le soutien de la ou les recherches en cours !", inline=False)
+    #     embed.add_field(name="__Ressources :__", value="Pour les débutants ou les joueurs cherchant de l'aide, le salon <#" + self.bot.RESSOURCES_CHANNEL_ID + "> est à disposition, vous y trouverez notamment les différentes cartes interactives, les builds, les guides et autres ressources importantes pour vous épauler.", inline=False)
     #     await msg.edit(embed = embed)
         
     #     await interaction.delete_original_message()
