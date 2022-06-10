@@ -33,45 +33,49 @@ class LostArkForumNews(commands.Cog):
             base = apiResponse["topic_list"]["topics"]
 
             self.api = []
+            loop = 1
             for each in base:
-                post_id = each["id"]
-                clean_url = f"https://forums.playlostark.com/t/{post_id}.json"
-                response = httpx.get(clean_url, headers=headers)
-                responseJSON = response.json()
+                if loop != 0:
+                    print(each)
+                    post_id = each["id"]
+                    clean_url = f"https://forums.playlostark.com/t/{post_id}.json"
+                    response = httpx.get(clean_url, headers=headers)
+                    responseJSON = response.json()
 
-                title = responseJSON["title"]
-                created_at = responseJSON["created_at"]
-                # grab last message in post
-                post_content = responseJSON["post_stream"]["posts"][-1]["cooked"]
-                # remove html tags from post content json string
-                post_content = re.sub(r"<.*?>", "", post_content)
-                # remove new lines from post content
-                post_content = re.sub(r"\n", " ", post_content)
-                # remove extra spaces from post content
-                post_content = re.sub(r"\s{2,}", " ", post_content)
-                # last message in post content
+                    title = responseJSON["title"]
+                    created_at = responseJSON["created_at"]
+                    # grab last message in post
+                    post_content = responseJSON["post_stream"]["posts"][-1]["cooked"]
+                    # remove html tags from post content json string
+                    post_content = re.sub(r"<.*?>", "", post_content)
+                    # remove new lines from post content
+                    post_content = re.sub(r"\n", " ", post_content)
+                    # remove extra spaces from post content
+                    post_content = re.sub(r"\s{2,}", " ", post_content)
+                    # last message in post content
 
-                # check if post is pinned
-                pinned = responseJSON["pinned"]
-                staff = responseJSON["post_stream"]["posts"][0]["staff"]
+                    # check if post is pinned
+                    pinned = responseJSON["pinned"]
+                    staff = responseJSON["post_stream"]["posts"][0]["staff"]
 
-                # author of post
-                author = responseJSON["post_stream"]["posts"][0]["username"]
+                    # author of post
+                    author = responseJSON["post_stream"]["posts"][0]["username"]
 
-                # url to post
-                slug = responseJSON["slug"]
-                url = f"https://forums.playlostark.com/t/{slug}/{post_id}"
+                    # url to post
+                    slug = responseJSON["slug"]
+                    url = f"https://forums.playlostark.com/t/{slug}/{post_id}"
 
-                if not pinned and staff:
-                    self.api.append(
-                        {
-                            "title": title,
-                            "created_at": created_at,
-                            "post_content": post_content,
-                            "author": author,
-                            "url": url
-                        }
-                    )
+                    if not pinned and staff:
+                        self.api.append(
+                            {
+                                "title": title,
+                                "created_at": created_at,
+                                "post_content": post_content,
+                                "author": author,
+                                "url": url
+                            }
+                        )
+                        loop = 0
 
             self.title = self.api[0]["title"]
             self.created_at = self.api[0]["created_at"]
