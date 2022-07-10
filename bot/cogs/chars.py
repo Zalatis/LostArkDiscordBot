@@ -48,11 +48,13 @@ class Chars(commands.Cog):
         global DB
         DB = self.db
 
-    def get_embed(self, item , page = 0 , total_page = 0):
+    def get_embed(self, item , page = 0 , total_page = 0, show_creator = True):
         embed = discord.Embed(title= item["char_name"] , color= discord.Color.random())
         user = self.bot.get_user(int(item["user_id"]))
 
-        embed.add_field(name="Created by", value= user.name)
+        if show_creator: 
+            embed.add_field(name="Created by", value= user.name)
+
         embed.add_field(name="Level", value= item["char_level"])
         embed.add_field(name="Class", value= item["char_class"])
 
@@ -139,6 +141,33 @@ class Chars(commands.Cog):
 
         await ctx.respond(
             "Select which character you want to delete",
+            embed = self.get_embed(chars[0],1,len(chars)),
+            view = view,
+            ephemeral = True
+        )
+    
+    @slashgroup.command(description = "List one/all of your characters")
+    async def list(
+        self, 
+        ctx:discord.ApplicationContext,
+        char_name: Option( str, description = "Enter your character's name", default = "Show All" , autocomplete = basic_autocomplete(all_characters))
+    ):
+        user_id = ctx.author.id
+
+        if char_name == "Show All":
+            chars = list(self.db.characters.find_all(user_id))
+        else:
+            chars = list(self.db.characters.find(user_id,char_name))
+
+
+        if not len(chars):
+            return await ctx.respond("No characters found", ephemeral = True)
+
+        view = self.get_view(chars,self.get_embed, "list")
+        content = "Showing all characters of " + ctx.author.display_name if char_name == "Show All" else "Showing a character of " + ctx.author.display_name
+
+        await ctx.respond(
+            content,
             embed = self.get_embed(chars[0],1,len(chars)),
             view = view,
             ephemeral = True
