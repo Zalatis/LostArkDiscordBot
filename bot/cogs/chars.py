@@ -41,7 +41,7 @@ def all_characters(ctx:discord.AutocompleteContext):
     print(chars)
     return list(chars)
 
-class Lfg(commands.Cog):
+class Chars(commands.Cog):
     def __init__(self, bot:commands.Bot):
         self.bot = bot
         self.db = self.bot.db
@@ -215,5 +215,5 @@ class Lfg(commands.Cog):
         return view
 
 def setup(bot:commands.Bot):
-    bot.add_cog(Lfg(bot))
+    bot.add_cog(Chars(bot))
 
