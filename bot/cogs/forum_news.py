@@ -108,8 +108,6 @@ class LostArkForumNews(commands.Cog):
                 for line in lines:
                     if line.startswith("Latest Title : "):
                         self.last_news_title = line.split("Latest Title : ")[1].strip()
-                        print(self.last_news_title)
-                        print(self.title)
                     elif line.startswith("Latest Description : "):
                         self.last_news_post_content = line.split("Latest Description : ")[1].strip()
                     elif line.startswith("Message ID : "):
