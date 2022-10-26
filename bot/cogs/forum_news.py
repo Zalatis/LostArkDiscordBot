@@ -36,7 +36,7 @@ class LostArkForumNews(commands.Cog):
             loop = 1
             for each in base:
                 if loop != 0:
-                    print(each)
+                    # print(each)
                     post_id = each["id"]
                     clean_url = f"https://forums.playlostark.com/t/{post_id}.json"
                     response = httpx.get(clean_url, headers=headers)
@@ -46,12 +46,18 @@ class LostArkForumNews(commands.Cog):
                     created_at = responseJSON["created_at"]
                     # grab last message in post
                     post_content = responseJSON["post_stream"]["posts"][-1]["cooked"]
-                    # remove html tags from post content json string
-                    post_content = re.sub(r"<.*?>", "", post_content)
-                    # remove new lines from post content
-                    post_content = re.sub(r"\n", " ", post_content)
+                    # # Double new lines from post content
+                    # post_content = re.sub(r"\n", "\n\n", post_content)
+                    # replace li and ul elements
+                    post_content = re.sub(r"<ul>\n", "", post_content)
+                    post_content = re.sub(r"<ol>\n", "", post_content)
+                    post_content = re.sub(r"<li>", "• ", post_content)
+                    post_content = re.sub(r"<\/li>\n", "\n", post_content)
+                    # remove html tags from post content
+                    post_content = re.sub(r"<[^\/].*?>", "", post_content)
+                    post_content = re.sub(r"<\/.*?>", "\n", post_content)
                     # remove extra spaces from post content
-                    post_content = re.sub(r"\s{2,}", " ", post_content)
+                    # post_content = re.sub(r"\s{2,}", " ", post_content)
                     # last message in post content
 
                     # check if post is pinned
@@ -64,6 +70,8 @@ class LostArkForumNews(commands.Cog):
                     # url to post
                     slug = responseJSON["slug"]
                     url = f"https://forums.playlostark.com/t/{slug}/{post_id}"
+                    if len(post_content) > 1500:
+                        post_content = post_content[:1500] + "..."
 
                     if not pinned and staff:
                         self.api.append(
@@ -139,16 +147,16 @@ class LostArkForumNews(commands.Cog):
                         with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
                             f.seek(0)
                             f.truncate()
-                            f.write("Latest Title : " + self.title + "\nLatest Description : " + self.post_content + "\nMessage ID : " + str(self.last_news_message_id))
+                            f.write("Latest Title : " + self.title + "\nLatest Description : " + repr(self.post_content) + "\nMessage ID : " + str(self.last_news_message_id))
                             f.close()
                     except:
                         raise Exception("Impossible d'ouvrir latest-forum-news.txt")
-                elif self.last_news_title == self.title and self.last_news_post_content != self.post_content:
+                elif self.last_news_title == self.title and repr(self.last_news_post_content) != repr(self.post_content):
                     try:
                         with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
                             f.seek(0)
                             f.truncate()
-                            f.write("Latest Title : " + self.title + "\nLatest Description : " + self.post_content + "\nMessage ID : " + str(self.last_news_message_id))
+                            f.write("Latest Title : " + self.title + "\nLatest Description : " + repr(self.post_content) + "\nMessage ID : " + str(self.last_news_message_id))
                             f.close()
                     except:
                         raise Exception("Impossible d'ouvrir latest-forum-news.txt")
@@ -164,7 +172,7 @@ class LostArkForumNews(commands.Cog):
                     with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
                         f.seek(0)
                         f.truncate()
-                        f.write("Latest Title : " + self.title + "\nLatest Description : " + self.post_content + "\nMessage ID : " + str(self.last_news_message_id))
+                        f.write("Latest Title : " + self.title + "\nLatest Description : " + repr(self.post_content) + "\nMessage ID : " + str(self.last_news_message_id))
                         f.close()
                 except:
                     raise Exception("Impossible d'ouvrir latest-forum-news.txt")
