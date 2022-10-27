@@ -46,19 +46,15 @@ class LostArkForumNews(commands.Cog):
                     created_at = responseJSON["created_at"]
                     # grab last message in post
                     post_content = responseJSON["post_stream"]["posts"][-1]["cooked"]
-                    # # Double new lines from post content
-                    # post_content = re.sub(r"\n", "\n\n", post_content)
-                    # replace li and ul elements
-                    post_content = re.sub(r"<ul>\n", "", post_content)
-                    post_content = re.sub(r"<ol>\n", "", post_content)
+
+                    post_content = re.sub(r"<ul>\n", "\n", post_content)
+                    post_content = re.sub(r"<ol>\n", "\n", post_content)
                     post_content = re.sub(r"<li>", "• ", post_content)
-                    post_content = re.sub(r"<\/li>\n", "\n", post_content)
-                    # remove html tags from post content
-                    post_content = re.sub(r"<[^\/].*?>", "", post_content)
-                    post_content = re.sub(r"<\/.*?>", "\n", post_content)
-                    # remove extra spaces from post content
-                    # post_content = re.sub(r"\s{2,}", " ", post_content)
-                    # last message in post content
+                    post_content = re.sub(r"<\/li>", "", post_content)
+                    post_content = re.sub(r"<\/ul>", "", post_content)
+                    post_content = re.sub(r"<\/ol>", "", post_content)
+                    post_content = re.sub(r"<\/.*?>\n<[^\/].*?>", "\n\n", post_content)
+                    post_content = re.sub(r"<.*?>", "", post_content)
 
                     # check if post is pinned
                     pinned = responseJSON["pinned"]
