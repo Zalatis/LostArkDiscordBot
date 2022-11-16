@@ -36,7 +36,7 @@ class LostArkForumNews(commands.Cog):
             loop = 1
             for each in base:
                 if loop != 0:
-                    print(each)
+                    # print(each)
                     post_id = each["id"]
                     clean_url = f"https://forums.playlostark.com/t/{post_id}.json"
                     response = httpx.get(clean_url, headers=headers)
@@ -46,13 +46,15 @@ class LostArkForumNews(commands.Cog):
                     created_at = responseJSON["created_at"]
                     # grab last message in post
                     post_content = responseJSON["post_stream"]["posts"][-1]["cooked"]
-                    # remove html tags from post content json string
+
+                    post_content = re.sub(r"<ul>\n", "\n", post_content)
+                    post_content = re.sub(r"<ol>\n", "\n", post_content)
+                    post_content = re.sub(r"<li>", "• ", post_content)
+                    post_content = re.sub(r"<\/li>", "", post_content)
+                    post_content = re.sub(r"<\/ul>", "", post_content)
+                    post_content = re.sub(r"<\/ol>", "", post_content)
+                    post_content = re.sub(r"<\/.*?>\n<[^\/].*?>", "\n\n", post_content)
                     post_content = re.sub(r"<.*?>", "", post_content)
-                    # remove new lines from post content
-                    post_content = re.sub(r"\n", " ", post_content)
-                    # remove extra spaces from post content
-                    post_content = re.sub(r"\s{2,}", " ", post_content)
-                    # last message in post content
 
                     # check if post is pinned
                     pinned = responseJSON["pinned"]
@@ -64,6 +66,8 @@ class LostArkForumNews(commands.Cog):
                     # url to post
                     slug = responseJSON["slug"]
                     url = f"https://forums.playlostark.com/t/{slug}/{post_id}"
+                    if len(post_content) > 1500:
+                        post_content = post_content[:1500] + "..."
 
                     if not pinned and staff:
                         self.api.append(
@@ -94,80 +98,50 @@ class LostArkForumNews(commands.Cog):
         self.get_news_info()
         self.news_channel = await self.bot.fetch_channel(int(self.bot.NEWS_CHANNEL_ID))
         try:
-            with open ('./bot/cogs/txt_files/latest-news.txt', 'r', encoding='utf8') as f:
+            with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'r', encoding='utf8') as f:
                 lines = f.readlines()
                 f.seek(0)
                 for line in lines:
                     if line.startswith("Latest Title : "):
                         self.last_news_title = line.split("Latest Title : ")[1].strip()
                     elif line.startswith("Latest Description : "):
-                        self.last_news_post_content = None
+                        self.last_news_post_content = line.split("Latest Description : ")[1].strip()
                     elif line.startswith("Message ID : "):
-                        self.last_news_message_id = None
+                        self.last_news_message_id = line.split("Message ID : ")[1].strip()
                     else:
+                        f.truncate()
                         self.last_news_title = None
+                        self.last_news_post_content = None
+                        self.last_news_message_id = None
                 f.close()
         except:
             raise Exception("Impossible d'ouvrir latest-forum-news.txt")
+        # Not same title
         if self.last_news_title != self.title:
+            embed = discord.Embed(title=self.title, url=self.url, description=self.post_content, color=self.color)
+            msg = await self.news_channel.send(embed=embed)
+            self.last_news_message_id = msg.id
             try:
-                with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'r+', encoding='utf8') as f:
-                    lines = f.readlines()
+                with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
                     f.seek(0)
-                    for line in lines:
-                        if line.startswith("Latest Title : "):
-                            self.last_news_title = line.split("Latest Title : ")[1].strip()
-                        elif line.startswith("Latest Description : "):
-                            self.last_news_post_content = line.split("Latest Description : ")[1].strip()
-                        elif line.startswith("Message ID : "):
-                            self.last_news_message_id = line.split("Message ID : ")[1].strip()
-                        else:
-                            f.truncate()
-                            self.last_news_title = None
-                            self.last_news_post_content = None
-                            self.last_news_message_id = None
+                    f.truncate()
+                    f.write("Latest Title : " + self.title + "\nLatest Description : " + repr(self.post_content) + "\nMessage ID : " + str(self.last_news_message_id))
                     f.close()
             except:
                 raise Exception("Impossible d'ouvrir latest-forum-news.txt")
-            if self.last_news_title != None:
-                if self.last_news_title != self.title:
-                    # print("Le titre a changé")
-                    embed = discord.Embed(title=self.title, url=self.url, description=self.post_content, color=self.color)
-                    msg = await self.news_channel.send(embed=embed)
-                    self.last_news_message_id = msg.id
-                    try:
-                        with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
-                            f.seek(0)
-                            f.truncate()
-                            f.write("Latest Title : " + self.title + "\nLatest Description : " + self.post_content + "\nMessage ID : " + str(self.last_news_message_id))
-                            f.close()
-                    except:
-                        raise Exception("Impossible d'ouvrir latest-forum-news.txt")
-                elif self.last_news_title == self.title and self.last_news_post_content != self.post_content:
-                    try:
-                        with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
-                            f.seek(0)
-                            f.truncate()
-                            f.write("Latest Title : " + self.title + "\nLatest Description : " + self.post_content + "\nMessage ID : " + str(self.last_news_message_id))
-                            f.close()
-                    except:
-                        raise Exception("Impossible d'ouvrir latest-forum-news.txt")
-                    self.msg = await self.news_channel.fetch_message(int(self.last_news_message_id))
-                    embed = discord.Embed(title=self.title, url=self.url, description=self.post_content, color=self.color)
-                    await self.msg.edit(embed = embed)
-            else:
-                # print("Premier message")
-                embed = discord.Embed(title=self.title, url=self.url, description=self.post_content, color=self.color)
-                msg = await self.news_channel.send(embed=embed)
-                self.last_news_message_id = msg.id
-                try:
-                    with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
-                        f.seek(0)
-                        f.truncate()
-                        f.write("Latest Title : " + self.title + "\nLatest Description : " + self.post_content + "\nMessage ID : " + str(self.last_news_message_id))
-                        f.close()
-                except:
-                    raise Exception("Impossible d'ouvrir latest-forum-news.txt")
+        # Same Title but not same post content
+        elif (self.last_news_title == self.title) and (self.last_news_post_content != repr(self.post_content)):
+            try:
+                with open ('./bot/cogs/txt_files/latest-forum-news.txt', 'w+', encoding='utf8') as f:
+                    f.seek(0)
+                    f.truncate()
+                    f.write("Latest Title : " + self.title + "\nLatest Description : " + repr(self.post_content) + "\nMessage ID : " + str(self.last_news_message_id))
+                    f.close()
+            except:
+                raise Exception("Impossible d'ouvrir latest-forum-news.txt")
+            self.msg = await self.news_channel.fetch_message(int(self.last_news_message_id))
+            embed = discord.Embed(title=self.title, url=self.url, description=self.post_content, color=self.color)
+            await self.msg.edit(embed = embed)
 
 def setup(bot:commands.Bot):
     bot.add_cog(LostArkForumNews(bot))

@@ -79,7 +79,7 @@ class LostArkNews(commands.Cog):
     async def update_news(self):
         await self.bot.wait_until_ready()
         self.get_news_info()
-        self.news_channel = await self.bot.fetch_channel(self.bot.NEWS_CHANNEL_ID)
+        self.news_channel = await self.bot.fetch_channel(int(self.bot.NEWS_CHANNEL_ID))
         self.title = self.news["title"].strip()
         self.url = self.news["url"].strip()
         self.desc = self.news["desc"].strip()
@@ -103,23 +103,8 @@ class LostArkNews(commands.Cog):
                 f.close()
         except:
             raise Exception("Impossible d'ouvrir latest-news.txt")
-        if self.last_news_title != None:
-            if self.last_news_title != self.title:
-                print("Le titre a changé")
-                embed = discord.Embed(title=self.title, url=self.url, description=self.desc, color=self.color)
-                embed.set_image(url=self.news["image"])
-                msg = await self.news_channel.send(embed=embed)
-                self.last_news_message_id = msg.id
-                try:
-                    with open ('./bot/cogs/txt_files/latest-news.txt', 'w+', encoding='utf8') as f:
-                        f.seek(0)
-                        f.truncate()
-                        f.write("Latest Title : " + self.title + "\nLatest Description : " + self.desc + "\nMessage ID : " + str(self.last_news_message_id))
-                        f.close()
-                except:
-                    raise Exception("Impossible d'ouvrir latest-news.txt")
-        else:
-            print("Premier message")
+        # Not same title
+        if self.last_news_title != self.title:
             embed = discord.Embed(title=self.title, url=self.url, description=self.desc, color=self.color)
             embed.set_image(url=self.news["image"])
             msg = await self.news_channel.send(embed=embed)
@@ -128,10 +113,24 @@ class LostArkNews(commands.Cog):
                 with open ('./bot/cogs/txt_files/latest-news.txt', 'w+', encoding='utf8') as f:
                     f.seek(0)
                     f.truncate()
-                    f.write("Latest Title : " + self.title + "\nLatest Description : " + self.desc + "\nMessage ID : " + str(self.last_news_message_id))
+                    f.write("Latest Title : " + self.title + "\nLatest Description : " + repr(self.desc) + "\nMessage ID : " + str(self.last_news_message_id))
                     f.close()
             except:
                 raise Exception("Impossible d'ouvrir latest-news.txt")
+        # Same Title but not same post content
+        elif (self.last_news_title == self.title) and (self.last_news_description != repr(self.desc)):
+            try:
+                with open ('./bot/cogs/txt_files/latest-news.txt', 'w+', encoding='utf8') as f:
+                    f.seek(0)
+                    f.truncate()
+                    f.write("Latest Title : " + self.title + "\nLatest Description : " + repr(self.desc) + "\nMessage ID : " + str(self.last_news_message_id))
+                    f.close()
+            except:
+                raise Exception("Impossible d'ouvrir latest-news.txt")
+            self.msg = await self.news_channel.fetch_message(int(self.last_news_message_id))
+            embed = discord.Embed(title=self.title, url=self.url, description=self.desc, color=self.color)
+            embed.set_image(url=self.news["image"])
+            await self.msg.edit(embed = embed)
 
 def setup(bot:commands.Bot):
     bot.add_cog(LostArkNews(bot))
