@@ -41,7 +41,7 @@ class Admin(commands.Cog):
         description = "Créer le message de rôles dans le canal de texte (Admin seulement)" ,
         guild_ids=GUILD_IDS
     )
-    @permissions.has_any_role(*PERMITED_ROLES_IDS)
+    @commands.has_any_role(*PERMITED_ROLES_IDS)
     async def role(self,ctx):
         if not await self.cog_check(ctx):
             return 
@@ -151,7 +151,7 @@ class Admin(commands.Cog):
         description = "Créer le message de bienvenue (Admin seulement)" ,
         guild_ids=GUILD_IDS
     )
-    @permissions.has_any_role(*PERMITED_ROLES_IDS)
+    @commands.has_any_role(*PERMITED_ROLES_IDS)
     async def welcome(self,ctx):
         if not await self.cog_check(ctx):
             return 
@@ -175,7 +175,7 @@ class Admin(commands.Cog):
         guild_ids=GUILD_IDS,
         default_permissions = False 
     )
-    @permissions.has_any_role(*PERMITED_ROLES_IDS)
+    @commands.has_any_role(*PERMITED_ROLES_IDS)
     async def move(self,ctx, de: discord.VoiceChannel, vers: discord.VoiceChannel):
         if not await self.cog_check(ctx):
             return 
