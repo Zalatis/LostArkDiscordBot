@@ -1,5 +1,5 @@
 import discord
-from discord import has_any_role, ui
+from discord import ui
 import wavelink
 import logging
 

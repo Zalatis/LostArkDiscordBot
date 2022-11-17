@@ -164,7 +164,7 @@ class Music(commands.Cog):
         guild_ids=GUILD_IDS,
         default_permissions = False 
     )
-    @permissions.has_any_role(*PERMITED_ROLES_IDS)
+    @commands.has_any_role(*PERMITED_ROLES_IDS)
     async def dc(self,ctx):
         if not await self.cog_check(ctx):
             return 

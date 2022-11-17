@@ -9,13 +9,6 @@ logging.basicConfig(
 )
 
 if __name__ == "__main__":
-    while True:
-        try:
-            bot = BotSubclass()
-            bot.run()
-        except KeyboardInterrupt:
-            print("\nExiting...")
-            break
-        except Exception as e:
-            sleep(30)
-            print('Failed with {!r}, retrying', e)
+
+    bot = BotSubclass()
+    bot.run()
