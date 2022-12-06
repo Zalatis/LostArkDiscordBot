@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands,tasks
 import re
 import httpx
+import html
 
 class LostArkForumNews(commands.Cog):
     def __init__(self, bot:commands.Bot):
@@ -54,8 +55,9 @@ class LostArkForumNews(commands.Cog):
                     post_content = re.sub(r"<\/ul>", "", post_content)
                     post_content = re.sub(r"<\/ol>", "", post_content)
                     post_content = re.sub(r"<\/.*?>\n<[^\/].*?>", "\n\n", post_content)
+                    post_content = re.sub(r'\(<a href="(.*?)\"([\s]class=".*?")?>(.*?)</a>\)', r'[\3](\1)', post_content)
                     post_content = re.sub(r"<.*?>", "", post_content)
-                    post_content = re.sub(r"&gt;", ">", post_content)
+                    post_content = html.unescape(post_content)
 
                     # check if post is pinned
                     pinned = responseJSON["pinned"]
