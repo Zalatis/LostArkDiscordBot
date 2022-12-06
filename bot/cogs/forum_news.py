@@ -55,6 +55,7 @@ class LostArkForumNews(commands.Cog):
                     post_content = re.sub(r"<\/ol>", "", post_content)
                     post_content = re.sub(r"<\/.*?>\n<[^\/].*?>", "\n\n", post_content)
                     post_content = re.sub(r"<.*?>", "", post_content)
+                    post_content = re.sub(r"&gt;", ">", post_content)
 
                     # check if post is pinned
                     pinned = responseJSON["pinned"]
