@@ -12,6 +12,6 @@ https://dsharpplus.github.io/articles/audio/lavalink/setup.html
 # Install bot
 `pip3 install -r requirements.txt`
 
-`cd .. && python3 main.py BOTTOKEN`
+`python3 main.py`
 
 You may need to change values in `config.json` and some in `cogs/admin.py`
