@@ -117,11 +117,11 @@ class Admin(commands.Cog):
         await msg.add_reaction(self.bot.DEMONISTE_EMOJI_ID)
 
         # Roles Spécialiste
-        # embed = discord.Embed(title="Spécialistes", description="Vous trouverez ci-dessous les rôles liés à la classe **Spécialiste**"  , color= discord.Color.from_rgb(134,161,133))
-        # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/277197386772774912/958088471514325012/ArchetypeSpecialist.png")
-        # embed.add_field(name="Artiste", value= "<"+ self.bot.ARTISTE_EMOJI_ID + ">", inline=True)
-        # msg = await ctx.channel.send(embed = embed)
-        # await msg.add_reaction(self.bot.ARTISTE_EMOJI_ID)
+        embed = discord.Embed(title="Spécialistes", description="Vous trouverez ci-dessous les rôles liés à la classe **Spécialiste**"  , color= discord.Color.from_rgb(134,161,133))
+        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/277197386772774912/958088471514325012/ArchetypeSpecialist.png")
+        embed.add_field(name="Artiste:", value= "<"+ self.bot.ARTISTE_EMOJI_ID + ">", inline=True)
+        msg = await ctx.channel.send(embed = embed)
+        await msg.add_reaction(self.bot.ARTISTE_EMOJI_ID)
 
         # Roles PvP/PvE
         embed = discord.Embed(title="Modes de jeu", description="Vous trouverez ci-dessous les rôles liés aux **modes de jeu**"  , color= discord.Color.from_rgb(174,171,212))
